@@ -9,6 +9,8 @@ import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
@@ -133,35 +135,24 @@ public class App implements OnInterfaceListener, OnRemoteIpConfigListener, OnRTT
 	@Override
 	public String onInterface() {
 		
-		
-		String it = "";
+		String interfaces = " ";
 		try {
-			
-			Enumeration<NetworkInterface> interfaces;
-			
-			interfaces = NetworkInterface.getNetworkInterfaces();
-			while(interfaces.hasMoreElements()) {
-				NetworkInterface netN = interfaces.nextElement();
+			List<NetworkInterface> ni = Collections.list(NetworkInterface.getNetworkInterfaces());
+			for(NetworkInterface i: ni) {
 				
-				if(netN.isUp()) {
-					it += netN.getName();
-					it += "\n";
-					if(netN.getHardwareAddress()!=null) {
-						
-						String mac = new BigInteger(1,netN.getHardwareAddress()).toString(16);
-						it += mac;
-						it += "\n";
-						
-					}
+				if(i.getHardwareAddress()!=null) {
+					interfaces += Collections.list(i.getInetAddresses()).toString();
 				}
 			}
+			
 			
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//System.out.println("Tiene que imprimir esto: " + it);
-		return it;	
+		
+		return interfaces;
+		
 	}
 	
 	
