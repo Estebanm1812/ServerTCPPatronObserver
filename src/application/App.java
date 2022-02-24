@@ -1,9 +1,11 @@
 package application;
 
 import java.math.BigInteger;
+import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -74,7 +76,7 @@ public class App implements OnInterfaceListener, OnRemoteIpConfigListener, OnRTT
 			
 			return msg;
 		}else {
-			return "El Mensaje no cumple con los 8192 bytes requerridos";
+			return "El Mensaje no cumple con los 8192 bytes requerbidos";
 		}
 		
 		
@@ -96,7 +98,13 @@ public class App implements OnInterfaceListener, OnRemoteIpConfigListener, OnRTT
 	public String onIPConfig() {
 	
 		String ips = " ";
-		
+		try {
+			ips = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*
 		Enumeration<NetworkInterface> interfaces;
 		try {
 			interfaces = NetworkInterface.getNetworkInterfaces();
@@ -117,6 +125,7 @@ public class App implements OnInterfaceListener, OnRemoteIpConfigListener, OnRTT
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		return ips;
 		
 	}
@@ -151,10 +160,10 @@ public class App implements OnInterfaceListener, OnRemoteIpConfigListener, OnRTT
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Tiene que imprimir esto: " + it);
+		//System.out.println("Tiene que imprimir esto: " + it);
 		return it;	
 	}
-
+	
 	
 	
 	
