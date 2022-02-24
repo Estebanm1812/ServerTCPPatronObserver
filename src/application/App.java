@@ -1,6 +1,7 @@
 package application;
 
 import java.math.BigInteger;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
@@ -135,27 +136,31 @@ public class App implements OnInterfaceListener, OnRemoteIpConfigListener, OnRTT
 	@Override
 	public String onInterface() {
 		
-		String interfaces = " ";
+		String interfacesResult = " ";
+		
+		List<NetworkInterface> interfaces;
 		try {
-			List<NetworkInterface> ni = Collections.list(NetworkInterface.getNetworkInterfaces());
-			for(NetworkInterface i: ni) {
-				
-				if(i.getHardwareAddress()!=null) {
-					interfaces += Collections.list(i.getInetAddresses()).toString();
+			interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+			for(NetworkInterface i:interfaces) {
+				if (i.getHardwareAddress() != null) {
+					List<InetAddress> ips = Collections.list(i.getInetAddresses());
+					for(InetAddress j:ips) {
+						if (j instanceof Inet4Address)
+							interfacesResult = i.getDisplayName();
+					}
 				}
-			}
 			
 			
+			
+		}
+
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return interfaces;
-		
+			
+	
+	
+		return interfacesResult;
 	}
-	
-	
-	
-	
 }
